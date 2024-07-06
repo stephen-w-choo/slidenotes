@@ -22,9 +22,7 @@ class FileConversionViewModel @Inject constructor(
         uri?.let {
             CoroutineScope(Dispatchers.IO).launch {
                 val resultString = convertPptUseCase(uri)
-                resultString?.let {
-                    _result.value = resultString
-                }
+                _result.value = resultString.getOrNull(0) ?: ""
             }
         }
     }

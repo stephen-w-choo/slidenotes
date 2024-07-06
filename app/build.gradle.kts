@@ -70,7 +70,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Apache POI for parsing PPT
-    implementation("org.apache.poi:poi-ooxml:5.2.5")
+    implementation(libs.poi.ooxml)
 
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-compiler:2.51.1")
