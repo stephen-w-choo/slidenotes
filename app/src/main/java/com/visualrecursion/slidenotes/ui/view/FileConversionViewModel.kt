@@ -15,14 +15,14 @@ import javax.inject.Inject
 class FileConversionViewModel @Inject constructor(
     private val convertPptUseCase: ConvertPptUseCase
 ): ViewModel() {
-    private val _result = MutableStateFlow<String>("")
+    private val _result = MutableStateFlow<List<String>>(emptyList())
     val result = _result.asStateFlow()
 
     fun handleFileUri(uri: Uri?) {
         uri?.let {
             CoroutineScope(Dispatchers.IO).launch {
-                val resultString = convertPptUseCase(uri)
-                _result.value = resultString.getOrNull(0) ?: ""
+                val result = convertPptUseCase(uri)
+                _result.value = result
             }
         }
     }

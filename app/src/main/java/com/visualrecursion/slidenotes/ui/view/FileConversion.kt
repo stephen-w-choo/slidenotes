@@ -3,18 +3,27 @@ package org.visualrecursion.slidenotes.view
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.visualrecursion.slidenotes.ui.view.components.NotesPager
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun FileConversionView(viewModel: FileConversionViewModel) {
+fun FileConversionView(
+    viewModel: FileConversionViewModel,
+    modifier: Modifier
+) {
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
         onResult = { uri: Uri? ->
@@ -23,15 +32,19 @@ fun FileConversionView(viewModel: FileConversionViewModel) {
         }
     )
 
+    val notesAsState = viewModel.result.collectAsState().value
+    val pagerState = rememberPagerState { notesAsState.size }
+
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center
     ) {
         Button(onClick = { launcher.launch(arrayOf("*/*")) }) {
             Text(text = "Test")
         }
-        Text(
-            text = viewModel.result.collectAsState().value
+        NotesPager(
+            notes = notesAsState,
+            pagerState = pagerState
         )
     }
 }
