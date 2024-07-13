@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SlideNotes</string>
+    <string name="dark_mode_accessibility">Dark mode</string>
+    <string name="change_font_size_accessibility">Change font size</string>
 </resources>

@@ -8,24 +8,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.example.compose.SlideNotesTheme
 
 data class DynamicUiValues(
-    val fontSize: FontSize = FontSize.SMALL,
+    val fontScale: Int = 4,
     val useDarkMode: Boolean = false
 )
 
 val DynamicUiValuesProvider = compositionLocalOf { DynamicUiValues() }
 
-enum class FontSize(val value: Dp) {
-    SMALLER(10.dp),
-    SMALL(14.dp),
-    MEDIUM(18.dp),
-    LARGE(22.dp),
-    LARGER(26.dp)
-}
+const val MIN_FONT_SIZE = 10
+const val MAX_FONT_SIZE = 32
+
+val FontSizes = (MIN_FONT_SIZE..MAX_FONT_SIZE).toList()
 
 data class ThemeActions(
     val switchTheme: () -> Unit,
@@ -53,7 +48,7 @@ fun ThemeWrapper(
         // `index` value must be restricted to fontSizes.size.
         // Unsure how to enforce this at a type level.
         dynamicUiValues = dynamicUiValues.copy(
-            fontSize = FontSize.entries[index]
+            fontScale = index
         )
     }
 

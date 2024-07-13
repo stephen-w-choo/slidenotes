@@ -13,7 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import com.visualrecursion.slidenotes.ui.view.components.NotesPager
+import com.visualrecursion.slidenotes.ui.screens.components.NotesPager
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
