@@ -7,15 +7,12 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.visualrecursion.slidenotes.ui.view.components.NotesPager
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -43,7 +40,7 @@ fun FileConversionView(
             Text(text = "Test")
         }
         NotesPager(
-            notes = notesAsState,
+            notes = notesAsState.map { it.speakerNotes },
             pagerState = pagerState
         )
     }

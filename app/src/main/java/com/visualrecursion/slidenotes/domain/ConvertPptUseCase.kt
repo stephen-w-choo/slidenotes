@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ConvertPptUseCase @Inject constructor(
     @ApplicationContext val appContext: Context
 ) {
-    suspend operator fun invoke(uri: Uri): List<String> {
+    suspend operator fun invoke(uri: Uri): List<SlideData> {
         return withContext(Dispatchers.IO) { // Make sure we're running on IO
             val contentResolver = appContext.contentResolver
             val inputStream = contentResolver.openInputStream(uri)
@@ -22,32 +22,36 @@ class ConvertPptUseCase @Inject constructor(
             if (inputStream != null) {
                 parseInputStream(inputStream) // implicit return
             } else {
-                listOf("") // implicit return
+                listOf() // implicit return
             }
         }
     }
 
-    private fun parseInputStream(inputStream: InputStream): List<String> {
+    private fun parseInputStream(inputStream: InputStream): List<SlideData> {
         inputStream.use { stream ->
             val pptObject = XMLSlideShow(stream)
             val slides = pptObject.slides
-            return extractSpeakerNotesFromSlides(slides)
+            val res = mutableListOf<SlideData>()
+
+            for (slide in slides) {
+                val slideTitle = slide.title ?: ""
+                val speakerNotes = extractSpeakerNotesFromSlides(slide)
+
+                val slideNote = SlideData(slideTitle, speakerNotes)
+
+                res.add(slideNote)
+            }
+            return res
         }
     }
 
-    private fun extractSpeakerNotesFromSlides(slides: List<XSLFSlide>): List<String> {
-        val res = mutableListOf<String>()
-
-        for (slide in slides) {
-            val notes: XSLFNotes? = slide.notes
-            if (notes != null) {
-                val notesParagraphs = notes.textParagraphs
-                val notesAsText = notesParagraphs.flatten().map{ it.text }
-                val joinedNotesAsText = notesAsText.joinToString("\n")
-                res.add(joinedNotesAsText)
-            }
+    private fun extractSpeakerNotesFromSlides(slide: XSLFSlide): String {
+        val notes: XSLFNotes? = slide.notes
+        if (notes != null) {
+            val notesParagraphs = notes.textParagraphs
+            val notesAsText = notesParagraphs.flatten().map{ it.text }
+            return notesAsText.joinToString("\n")
         }
-
-        return res
+        return ""
     }
 }

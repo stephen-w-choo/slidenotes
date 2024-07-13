@@ -3,6 +3,7 @@ package org.visualrecursion.slidenotes.view
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.visualrecursion.slidenotes.domain.ConvertPptUseCase
+import com.visualrecursion.slidenotes.domain.SlideData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,7 @@ import javax.inject.Inject
 class FileConversionViewModel @Inject constructor(
     private val convertPptUseCase: ConvertPptUseCase
 ): ViewModel() {
-    private val _result = MutableStateFlow<List<String>>(emptyList())
+    private val _result = MutableStateFlow<List<SlideData>>(emptyList())
     val result = _result.asStateFlow()
 
     fun handleFileUri(uri: Uri?) {
