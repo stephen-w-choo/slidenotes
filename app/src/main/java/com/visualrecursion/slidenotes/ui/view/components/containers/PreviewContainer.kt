@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.visualrecursion.slidenotes.ui.theme.SlideNotesTheme
+import com.example.compose.SlideNotesTheme
 
 @Composable
 fun PreviewContainer(children: @Composable () -> Unit) {

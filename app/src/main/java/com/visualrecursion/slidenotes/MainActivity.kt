@@ -12,8 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.visualrecursion.slidenotes.domain.ConvertPptUseCase
-import com.visualrecursion.slidenotes.ui.theme.SlideNotesTheme
+import com.example.compose.SlideNotesTheme
 import dagger.hilt.android.AndroidEntryPoint
 import org.visualrecursion.slidenotes.view.FileConversionView
 import org.visualrecursion.slidenotes.view.FileConversionViewModel
@@ -21,6 +20,8 @@ import org.visualrecursion.slidenotes.view.FileConversionViewModel
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
