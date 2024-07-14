@@ -1,4 +1,4 @@
-package com.visualrecursion.slidenotes.ui.screens.components.containers
+package com.visualrecursion.slidenotes.ui.components.containers
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.visualrecursion.slidenotes
+package com.visualrecursion.slidenotes.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -11,14 +11,14 @@ import androidx.compose.runtime.setValue
 import com.example.compose.SlideNotesTheme
 
 data class DynamicUiValues(
-    val fontScale: Int = 4,
+    val fontScale: Int = 8,
     val useDarkMode: Boolean = false
 )
 
 val DynamicUiValuesProvider = compositionLocalOf { DynamicUiValues() }
 
 const val MIN_FONT_SIZE = 10
-const val MAX_FONT_SIZE = 32
+const val MAX_FONT_SIZE = 36
 
 val FontSizes = (MIN_FONT_SIZE..MAX_FONT_SIZE).toList()
 

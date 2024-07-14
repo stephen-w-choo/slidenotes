@@ -1,4 +1,4 @@
-package com.visualrecursion.slidenotes.ui.screens.components
+package com.visualrecursion.slidenotes.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,9 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.visualrecursion.slidenotes.DynamicUiValuesProvider
-import com.visualrecursion.slidenotes.FontSizes
-import com.visualrecursion.slidenotes.ui.screens.components.containers.PreviewContainer
+import com.visualrecursion.slidenotes.ui.theme.DynamicUiValuesProvider
+import com.visualrecursion.slidenotes.ui.theme.FontSizes
+import com.visualrecursion.slidenotes.ui.components.containers.PreviewContainer
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -44,7 +44,7 @@ fun NotesPager(
                     .verticalScroll(rememberScrollState())
             ) {
                 val dynamicFontSize = FontSizes[DynamicUiValuesProvider.current.fontScale]
-                val LINE_SPACING = 1.15
+                val LINE_SPACING = 1.25
 
                 Text(
                     text = notes[noteIndex],
