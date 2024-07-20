@@ -1,4 +1,4 @@
-package com.visualrecursion.slidenotes.ui.screens.startMenu
+package com.visualrecursion.slidenotes.ui.screens.landing
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
@@ -37,9 +37,9 @@ class StartMenuViewModel @Inject constructor(
                 }
 
                 try {
-                    val result = convertPptUseCase(pptxObject)
+                    val result = convertPptUseCase("Placeholder", pptxObject)
                     _startMenuUiState.value = StartMenuUiState.Parsed(
-                        parsedObject = result
+                        savedSlideNoteId = result
                     )
                 } catch(e: Exception) {
                     setErrorState("Error parsing file: $e")
@@ -48,11 +48,11 @@ class StartMenuViewModel @Inject constructor(
         }
     }
 
-    fun isValidFileExtension(mimeType: String?): Boolean {
-        if (mimeType == "pptx" || mimeType == "odp") {
+    fun checkValidFileExtension(fileExtension: String?): Boolean {
+        if (fileExtension == "pptx") {
             return true
         }
-        setErrorState("Invalid file type: $mimeType. Only .pptx files are supported at the moment.")
+        setErrorState("Invalid file type: $fileExtension. Only .pptx files are supported at the moment.")
         return false
     }
 

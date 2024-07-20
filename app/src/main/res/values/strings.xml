@@ -2,4 +2,6 @@
     <string name="app_name">SlideNotes</string>
     <string name="dark_mode_accessibility">Dark mode</string>
     <string name="change_font_size_accessibility">Change font size</string>
+    <string name="navigation_error_message">Sorry, we couldn\'t retrieve that file - try again</string>
+    <string name="loading_text_processing">Processing file</string>
 </resources>

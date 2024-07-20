@@ -1,6 +1,5 @@
-package com.visualrecursion.slidenotes.ui.screens.startMenu
+package com.visualrecursion.slidenotes.ui.screens.landing
 
-import com.visualrecursion.slidenotes.domain.SlideData
 
 sealed interface StartMenuUiState {
     data object Default : StartMenuUiState
@@ -9,6 +8,6 @@ sealed interface StartMenuUiState {
         val error: String
     ) : StartMenuUiState
     data class Parsed(
-        val parsedObject: List<SlideData>
+        val savedSlideNoteId: Long
     ) : StartMenuUiState
 }

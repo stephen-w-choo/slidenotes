@@ -16,7 +16,9 @@ import com.visualrecursion.slidenotes.ui.components.containers.PreviewContainer
 
 
 @Composable
-fun LoadingIndicator() {
+fun LoadingIndicator(
+    loadingText: String
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -29,7 +31,7 @@ fun LoadingIndicator() {
             modifier = Modifier.height(24.dp)
         )
         Text(
-            text = "Processing file",
+            text = loadingText,
             style = MaterialTheme.typography.bodyLarge
         )
     }
@@ -39,6 +41,6 @@ fun LoadingIndicator() {
 @Composable
 fun LoadingIndicatorPreview() {
     PreviewContainer {
-        LoadingIndicator()
+        LoadingIndicator("Processing file")
     }
 }

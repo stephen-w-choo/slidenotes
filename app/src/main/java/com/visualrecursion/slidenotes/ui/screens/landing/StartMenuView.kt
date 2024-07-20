@@ -1,4 +1,4 @@
-package com.visualrecursion.slidenotes.ui.screens.startMenu
+package com.visualrecursion.slidenotes.ui.screens.landing
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -12,25 +12,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.visualrecursion.slidenotes.domain.SlideData
+import com.visualrecursion.slidenotes.R
 import com.visualrecursion.slidenotes.ui.components.ErrorBox
 import com.visualrecursion.slidenotes.ui.components.LoadingIndicator
 import com.visualrecursion.slidenotes.ui.utils.getFileExtension
-import com.visualrecursion.slidenotes.ui.screens.notesView.NotesViewModel
 
 
 @Composable
 fun StartMenuView(
     viewModel: StartMenuViewModel,
-    notesViewModel: NotesViewModel, // TODO - remove
-    navigateToNotes: (List<SlideData>) -> Unit
+    navigateToNotes: (Long) -> Unit
 ) {
     val uiState = viewModel.startMenuUiState.collectAsState().value
 
     if (uiState is StartMenuUiState.Parsed) {
-        notesViewModel.setSlideData(slideData = uiState.parsedObject) // TODO - remove
-        navigateToNotes(uiState.parsedObject)
+        navigateToNotes(uiState.savedSlideNoteId)
         viewModel.resetState()
     }
 
@@ -38,13 +36,13 @@ fun StartMenuView(
         LoadDocumentButton(
             viewModel = viewModel,
             disabled = (uiState is StartMenuUiState.Loading
-                    || uiState is StartMenuUiState.Parsed)
+                     || uiState is StartMenuUiState.Parsed)
         )
         Column(
             modifier = Modifier.heightIn(min = 300.dp)
         ) {
             AnimatedVisibility(visible = uiState is StartMenuUiState.Loading) {
-                LoadingIndicator()
+                LoadingIndicator(stringResource(R.string.loading_text_processing))
             }
             AnimatedVisibility(visible = uiState is StartMenuUiState.Error) {
                 if (uiState is StartMenuUiState.Error) {
@@ -72,7 +70,7 @@ fun LoadDocumentButton(
             val fileExtension = getFileExtension(context, uri)
 
             // check the file extension
-            if (viewModel.isValidFileExtension(fileExtension)) {
+            if (viewModel.checkValidFileExtension(fileExtension)) {
                 viewModel.handleFileUri(uri)
             }
         }
