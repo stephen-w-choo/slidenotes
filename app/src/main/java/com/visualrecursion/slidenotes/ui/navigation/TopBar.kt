@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +30,7 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
+    toggleNavDrawer: () -> Unit,
     themeActions: ThemeActions
 ) {
     Column {
@@ -37,6 +40,11 @@ fun TopBar(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
+            Button(
+               onClick = { toggleNavDrawer() }
+            ) {
+                Text("test")
+            }
             Icon(
                 painter = painterResource(R.drawable.ic_font_size_decrease),
                 contentDescription = null
@@ -70,6 +78,6 @@ fun TopBar(
 @Composable
 fun TopBarPreview() {
     PreviewContainer {
-        TopBar(themeActions = ThemeActions({}, {}))
+        TopBar(toggleNavDrawer = {}, themeActions = ThemeActions({}, {}))
     }
 }

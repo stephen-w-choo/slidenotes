@@ -7,6 +7,8 @@ import com.visualrecursion.slidenotes.data.entities.SlideNoteEntity
 import com.visualrecursion.slidenotes.data.entities.toSlideNote
 import com.visualrecursion.slidenotes.domain.models.NotesCollection
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 class SlideNotesRepository @Inject constructor(
@@ -39,16 +41,21 @@ class SlideNotesRepository @Inject constructor(
         return collectionId
     }
 
-    suspend fun getNotesCollection(collectionId: Long): NotesCollection {
-        return NotesCollection(
-            name = slideNotesDao.getNotesCollection(collectionId).name,
-            notes = slideNotesDao.getSlideNotes(collectionId).map {
-                it.toSlideNote()
-            }
-        )
+    fun getNotesCollection(collectionId: Long): Flow<NotesCollection> {
+        return combine(
+            slideNotesDao.getNotesCollection(collectionId),
+            slideNotesDao.getSlideNotes(collectionId)
+        ) { notesCollection, slideNotesList ->
+            NotesCollection(
+                name = notesCollection.name,
+                notes = slideNotesList.map {
+                    it.toSlideNote()
+                }
+            )
+        }
     }
 
-    suspend fun getAllNotesCollectionEntities(): List<NotesCollectionEntity> {
+    fun getAllNotesCollectionEntitiesFlow(): Flow<List<NotesCollectionEntity>> {
         return slideNotesDao.getAllCollectionEntities()
     }
 }

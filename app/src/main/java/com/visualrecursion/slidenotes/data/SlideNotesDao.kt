@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.visualrecursion.slidenotes.data.entities.SlideNoteEntity
 import com.visualrecursion.slidenotes.data.entities.NotesCollectionEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SlideNotesDao {
@@ -15,11 +16,11 @@ interface SlideNotesDao {
     suspend fun insertSlideNotes(slideNoteEntities: List<SlideNoteEntity>): List<Long>
 
     @Query("SELECT * FROM slide_note_collections WHERE id == :id")
-    suspend fun getNotesCollection(id: Long): NotesCollectionEntity
+    fun getNotesCollection(id: Long): Flow<NotesCollectionEntity>
 
     @Query("SELECT * FROM slide_notes WHERE collectionId == :collectionId ORDER BY `index`")
-    suspend fun getSlideNotes(collectionId: Long): List<SlideNoteEntity>
+    fun getSlideNotes(collectionId: Long): Flow<List<SlideNoteEntity>>
 
     @Query("SELECT * FROM slide_note_collections")
-    suspend fun getAllCollectionEntities(): List<NotesCollectionEntity>
+    fun getAllCollectionEntities(): Flow<List<NotesCollectionEntity>>
 }

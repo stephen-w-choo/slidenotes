@@ -3,7 +3,6 @@ package com.visualrecursion.slidenotes.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -21,12 +20,12 @@ sealed class NavRoute(val name: String) {
         const val COLLECTION_ID = "collectionId"
     }
     data object StartMenu : NavRoute("startMenu")
-    data object NotesCarousel : NavRoute("notesCarousel/{${Arguments.COLLECTION_ID}}") {
-        fun retrieveCollectionWithId(collectionId: Long): String = "notesCarousel/$collectionId"
-    }
+    data object NotesCarousel : NavRoute("notesCarousel/{${Arguments.COLLECTION_ID}}")
 }
 
-
+fun NavHostController.navigateToCollectionWithId(collectionId: Long) {
+    this.navigate("notesCarousel/$collectionId")
+}
 
 @Composable
 fun AppNavigation(
@@ -44,9 +43,7 @@ fun AppNavigation(
             StartMenuView(
                 viewModel = hiltViewModel<StartMenuViewModel>(backStackEntry),
                 navigateToNotes = { collectionId ->
-                    navController.navigate(
-                        NavRoute.NotesCarousel.retrieveCollectionWithId(collectionId)
-                    )
+                    navController.navigateToCollectionWithId(collectionId)
                 }
             )
         }

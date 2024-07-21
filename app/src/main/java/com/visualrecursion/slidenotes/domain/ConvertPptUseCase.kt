@@ -1,10 +1,8 @@
 package com.visualrecursion.slidenotes.domain
 
-import android.content.Context
 import com.visualrecursion.slidenotes.data.SlideNotesRepository
-import com.visualrecursion.slidenotes.domain.models.SlideNote
 import com.visualrecursion.slidenotes.domain.models.NotesCollection
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.visualrecursion.slidenotes.domain.models.SlideNote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.poi.xslf.usermodel.XMLSlideShow
@@ -16,6 +14,9 @@ import javax.inject.Inject
 class ConvertPptUseCase @Inject constructor(
     private val slideNotesRepository: SlideNotesRepository
 ) {
+    /**
+     Converts the PPT, loads into the DB, and returns the slideNote ID for DB retrieval
+     */
     suspend operator fun invoke(name: String, pptxObject: XMLSlideShow): Long {
         return withContext(Dispatchers.IO) { // Make sure we're running on IO
             val slideNotes = parsePptx(pptxObject)
