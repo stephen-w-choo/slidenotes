@@ -1,11 +1,11 @@
 package com.visualrecursion.slidenotes.ui.screens.notesView
 
-import com.visualrecursion.slidenotes.domain.models.NotesCollection
+import com.visualrecursion.slidenotes.domain.models.SlideNote
 
 sealed interface NotesViewUiState {
     data object Loading : NotesViewUiState
     data object Error : NotesViewUiState
     data class Success(
-        val notes: NotesCollection
+        val notes: SlideNote
     ) : NotesViewUiState
 }

@@ -2,6 +2,11 @@ package com.visualrecursion.slidenotes.ui
 
 // Exceptions for the View/UI level logic
 
+class DeletionFailedException(
+    message: String = "Failed to delete file",
+    cause: Throwable? = null
+) : Exception(message, cause)
+
 class EmptyFileException(
     message: String = "File appears to be empty or blank",
     cause: Throwable? = null

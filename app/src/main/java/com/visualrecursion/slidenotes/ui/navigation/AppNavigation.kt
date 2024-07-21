@@ -20,11 +20,11 @@ sealed class NavRoute(val name: String) {
         const val COLLECTION_ID = "collectionId"
     }
     data object StartMenu : NavRoute("startMenu")
-    data object NotesCarousel : NavRoute("notesCarousel/{${Arguments.COLLECTION_ID}}")
+    data object SlideNotesViewer : NavRoute("slideNotesViewer/{${Arguments.COLLECTION_ID}}")
 }
 
 fun NavHostController.navigateToCollectionWithId(collectionId: Long) {
-    this.navigate("notesCarousel/$collectionId")
+    this.navigate("slideNotesViewer/$collectionId")
 }
 
 @Composable
@@ -48,7 +48,7 @@ fun AppNavigation(
             )
         }
         composable(
-            route = NavRoute.NotesCarousel.name,
+            route = NavRoute.SlideNotesViewer.name,
             arguments = listOf(
                 navArgument(NavRoute.Arguments.COLLECTION_ID) { type = NavType.LongType }
             )

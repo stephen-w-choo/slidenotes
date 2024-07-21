@@ -1,8 +1,8 @@
 package com.visualrecursion.slidenotes.domain
 
 import com.visualrecursion.slidenotes.data.SlideNotesRepository
-import com.visualrecursion.slidenotes.domain.models.NotesCollection
 import com.visualrecursion.slidenotes.domain.models.SlideNote
+import com.visualrecursion.slidenotes.domain.models.SlideNoteItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.poi.xslf.usermodel.XMLSlideShow
@@ -20,8 +20,8 @@ class ConvertPptUseCase @Inject constructor(
     suspend operator fun invoke(name: String, pptxObject: XMLSlideShow): Long {
         return withContext(Dispatchers.IO) { // Make sure we're running on IO
             val slideNotes = parsePptx(pptxObject)
-            slideNotesRepository.saveSlideNoteCollection( // implicit return of ID
-                NotesCollection(
+            slideNotesRepository.saveSlideNote( // implicit return of ID
+                SlideNote(
                     name = name,
                     notes = slideNotes
                 )
@@ -29,15 +29,15 @@ class ConvertPptUseCase @Inject constructor(
         }
     }
 
-    private fun parsePptx(pptxObject: XMLSlideShow): List<SlideNote> {
+    private fun parsePptx(pptxObject: XMLSlideShow): List<SlideNoteItem> {
         val slides = pptxObject.slides
-        val res = mutableListOf<SlideNote>()
+        val res = mutableListOf<SlideNoteItem>()
 
         for (slide in slides) {
             val slideTitle = slide.title ?: ""
             val speakerNotes = extractSpeakerNotesFromSlides(slide)
-            val slideNote = SlideNote(slideTitle, speakerNotes)
-            res.add(slideNote)
+            val slideNoteItem = SlideNoteItem(slideTitle, speakerNotes)
+            res.add(slideNoteItem)
         }
         return res
     }

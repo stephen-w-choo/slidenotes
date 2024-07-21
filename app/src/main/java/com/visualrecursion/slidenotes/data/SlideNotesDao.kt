@@ -3,24 +3,27 @@ package com.visualrecursion.slidenotes.data
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.visualrecursion.slidenotes.data.entities.SlideNoteItemEntity
 import com.visualrecursion.slidenotes.data.entities.SlideNoteEntity
-import com.visualrecursion.slidenotes.data.entities.NotesCollectionEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SlideNotesDao {
     @Insert
-    suspend fun insertSlideNoteCollection(notesCollectionEntity: NotesCollectionEntity): Long
+    suspend fun insertSlideNote(slideNoteEntity: SlideNoteEntity): Long
 
     @Insert
-    suspend fun insertSlideNotes(slideNoteEntities: List<SlideNoteEntity>): List<Long>
+    suspend fun insertSlideNoteItems(slideNoteEntities: List<SlideNoteItemEntity>): List<Long>
+
+    @Query("DELETE FROM slide_note_collections WHERE id == :id")
+    suspend fun deleteNotesCollection(id: Long): Int
 
     @Query("SELECT * FROM slide_note_collections WHERE id == :id")
-    fun getNotesCollection(id: Long): Flow<NotesCollectionEntity>
+    fun getSlideNoteById(id: Long): Flow<SlideNoteEntity>
 
     @Query("SELECT * FROM slide_notes WHERE collectionId == :collectionId ORDER BY `index`")
-    fun getSlideNotes(collectionId: Long): Flow<List<SlideNoteEntity>>
+    fun getSlideItemListById(collectionId: Long): Flow<List<SlideNoteItemEntity>>
 
     @Query("SELECT * FROM slide_note_collections")
-    fun getAllCollectionEntities(): Flow<List<NotesCollectionEntity>>
+    fun getAllSlideNoteEntities(): Flow<List<SlideNoteEntity>>
 }

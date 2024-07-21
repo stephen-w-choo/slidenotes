@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.visualrecursion.slidenotes.R
-import com.visualrecursion.slidenotes.domain.models.NotesCollection
+import com.visualrecursion.slidenotes.domain.models.SlideNote
 import com.visualrecursion.slidenotes.ui.components.NotesPager
 
 @Composable
@@ -42,17 +42,17 @@ fun NotesView(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NotesSuccessView(
-    notesCollection: NotesCollection
+    slideNote: SlideNote
 ) {
 
-    val pagerState = rememberPagerState { notesCollection.notes.size }
+    val pagerState = rememberPagerState { slideNote.notes.size }
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center
     ) {
         NotesPager(
-            notes = notesCollection.notes.map { it.content },
+            notes = slideNote.notes.map { it.content },
             pagerState = pagerState
         )
     }

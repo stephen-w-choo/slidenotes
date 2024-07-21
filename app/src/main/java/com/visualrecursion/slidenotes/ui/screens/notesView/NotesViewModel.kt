@@ -30,7 +30,11 @@ class NotesViewModel @Inject constructor(
             if (collectionId == null) throw Exception()
             viewModelScope.launch {
                 repositoryUseCases.getNotesCollectionById(collectionId).collect {
-                    _uiState.value = NotesViewUiState.Success(it)
+                    if (it == null) {
+                        _uiState.value = NotesViewUiState.Error
+                    } else {
+                        _uiState.value = NotesViewUiState.Success(it)
+                    }
                 }
             }
         } catch (e: Exception) {
