@@ -1,17 +1,14 @@
 package com.visualrecursion.slidenotes.ui.navigation
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.visualrecursion.slidenotes.R
+import com.visualrecursion.slidenotes.ui.navigation.components.MakeNewSlideNoteButton
+import com.visualrecursion.slidenotes.ui.navigation.components.SlideNoteNavDrawerItem
+import com.visualrecursion.slidenotes.ui.utils.isCurrentDestinationOnCollectionId
 import kotlinx.coroutines.launch
 
 @Composable
@@ -25,11 +22,7 @@ fun NavigationDrawer(
     val closeDrawer = { scope.launch { drawerState.close() } }
 
     ModalDrawerSheet {
-        NavigationDrawerItem(
-            label = {
-                Text(text = stringResource(R.string.make_a_new_slidenote))
-            },
-            selected = false,
+        MakeNewSlideNoteButton(
             onClick = {
                 navController.navigate(NavRoute.StartMenu.name)
                 closeDrawer()
@@ -37,17 +30,11 @@ fun NavigationDrawer(
         )
 
         collectionEntitiesList.map {
-            NavigationDrawerItem(
-                label = {
-                    Row {
-                        Text(text = it.name)
-                        Button(onClick = { viewModel.deleteEntityById(it.id) }) {
-                            Text(text = "Delete")
-                        }
-                    }
-                },
-                selected = false,
-                onClick = {
+            SlideNoteNavDrawerItem(
+                slideNoteEntity = it,
+                selected = navController.isCurrentDestinationOnCollectionId(collectionId = it.id),
+                onDeleteAction = { viewModel.deleteEntityById(it.id) },
+                onClickAction = {
                     navController.navigateToCollectionWithId(it.id)
                     closeDrawer()
                 }

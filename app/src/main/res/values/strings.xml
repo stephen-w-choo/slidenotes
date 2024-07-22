@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">SlideNotes</string>
+
+    <!--  Accessibility  -->
     <string name="dark_mode_accessibility">Dark mode</string>
     <string name="change_font_size_accessibility">Change font size</string>
+    <string name="delete_note_accessibility">Delete note, %1$s</string>
+
+    <!--  Screen copy  -->
     <string name="navigation_error_message">Sorry, that note does not appear to be available</string>
     <string name="loading_text_processing">Processing file</string>
     <string name="make_a_new_slidenote">Make a new SlideNote</string>

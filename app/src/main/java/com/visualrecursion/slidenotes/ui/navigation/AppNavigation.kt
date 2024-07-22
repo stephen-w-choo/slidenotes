@@ -20,7 +20,11 @@ sealed class NavRoute(val name: String) {
         const val COLLECTION_ID = "collectionId"
     }
     data object StartMenu : NavRoute("startMenu")
-    data object SlideNotesViewer : NavRoute("slideNotesViewer/{${Arguments.COLLECTION_ID}}")
+    data object SlideNotesViewer : NavRoute("slideNotesViewer/{${Arguments.COLLECTION_ID}}") {
+        fun routeFromId(collectionId: Long): String {
+            return "slideNotesViewer/$collectionId"
+        }
+    }
 }
 
 fun NavHostController.navigateToCollectionWithId(collectionId: Long) {
