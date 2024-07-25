@@ -38,6 +38,6 @@ fun MakeNewSlideNoteButton(
 @Composable
 fun MakeNewSlideNoteButtonPreview() {
     PreviewContainer {
-        MakeNewSlideNoteButton({})
+        MakeNewSlideNoteButton { }
     }
 }

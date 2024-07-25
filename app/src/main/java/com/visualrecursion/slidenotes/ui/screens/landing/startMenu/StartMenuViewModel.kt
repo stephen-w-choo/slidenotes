@@ -1,10 +1,13 @@
-package com.visualrecursion.slidenotes.ui.screens.landing
+package com.visualrecursion.slidenotes.ui.screens.landing.startMenu
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.visualrecursion.slidenotes.domain.ConvertPptUseCase
 import com.visualrecursion.slidenotes.domain.LoadPptxUseCase
+import com.visualrecursion.slidenotes.ui.screens.landing.PptxObjectHolder
+import com.visualrecursion.slidenotes.ui.utils.getFileDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StartMenuViewModel @Inject constructor(
-    private val convertPptUseCase: ConvertPptUseCase,
-    private val loadPptxUseCase: LoadPptxUseCase
+    private val loadPptxUseCase: LoadPptxUseCase,
+    private val pptxObjectHolder: PptxObjectHolder,
+    @ApplicationContext private val context: Context
 ): ViewModel() {
     private val _startMenuUiState = MutableStateFlow<StartMenuUiState>(StartMenuUiState.Default)
     val startMenuUiState = _startMenuUiState.asStateFlow()
@@ -30,20 +34,18 @@ class StartMenuViewModel @Inject constructor(
 
         if (uri != null) {
             CoroutineScope(Dispatchers.IO).launch {
-                val pptxObject = loadPptxUseCase(uri)
-                if (pptxObject == null) {
+                val xmlSlideShow = loadPptxUseCase(uri)
+
+                if (xmlSlideShow == null) {
                     setErrorState("File appears to be empty or blank")
                     return@launch
                 }
 
-                try {
-                    val result = convertPptUseCase("Placeholder", pptxObject)
-                    _startMenuUiState.value = StartMenuUiState.Parsed(
-                        savedSlideNoteId = result
-                    )
-                } catch(e: Exception) {
-                    setErrorState("Error parsing file: $e")
-                }
+                val fileDetails = getFileDetails(context, uri)
+
+                pptxObjectHolder.pptxObject.value = PptxObject(fileDetails, xmlSlideShow)
+
+                _startMenuUiState.value = StartMenuUiState.PptxLoaded
             }
         }
     }

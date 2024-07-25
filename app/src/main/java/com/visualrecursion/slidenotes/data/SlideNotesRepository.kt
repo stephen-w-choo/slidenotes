@@ -19,6 +19,7 @@ class SlideNotesRepository @Inject constructor(
 
     val slideNotesDao = db.slideNoteDao()
 
+    // Group functions
     suspend fun saveSlideNote(slideNote: SlideNote): Long {
         val collectionId = slideNotesDao.insertSlideNote(
             SlideNoteEntity(name = slideNote.name)
@@ -57,7 +58,12 @@ class SlideNotesRepository @Inject constructor(
         }
     }
 
-    suspend fun deleteSlideNote(slideNoteId: Long) {
+    // Slide note collection functions
+    suspend fun updateSlideNoteCollection(id: Long, name: String) {
+        slideNotesDao.updateSlideNote(id, name)
+    }
+
+    suspend fun deleteSlideNoteCollection(slideNoteId: Long) {
         val res = slideNotesDao.deleteNotesCollection(slideNoteId)
         if (res == 0) throw DeletionFailedException()
     }
@@ -68,4 +74,6 @@ class SlideNotesRepository @Inject constructor(
         }
         return res
     }
+
+    // Slide note individual item functions
 }

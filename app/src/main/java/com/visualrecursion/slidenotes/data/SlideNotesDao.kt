@@ -26,4 +26,7 @@ interface SlideNotesDao {
 
     @Query("SELECT * FROM slide_note_collections")
     fun getAllSlideNoteEntities(): Flow<List<SlideNoteEntity>>
+
+    @Query("UPDATE slide_note_collections SET name = :name WHERE id == :id")
+    suspend fun updateSlideNote(id: Long, name: String)
 }

@@ -14,10 +14,14 @@ class RepositoryUseCases @Inject constructor(
     }
 
     suspend fun deleteNotesCollectionById(id: Long) {
-        slideNotesRepository.deleteSlideNote(id)
+        slideNotesRepository.deleteSlideNoteCollection(id)
     }
 
     fun getAllCollectionEntitiesFlow(): Flow<List<SlideNoteEntity>> {
         return slideNotesRepository.getAllSlideNoteEntitiesFlow()
+    }
+
+    suspend fun updateSlideNoteCollection(id: Long, name: String) {
+        slideNotesRepository.updateSlideNoteCollection(id, name)
     }
 }

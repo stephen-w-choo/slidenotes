@@ -38,4 +38,14 @@ class ScaffoldViewModel @Inject constructor(
             // TODO - add a toast
         }
     }
+
+    fun updateEntityById(id: Long, newName: String) {
+        try {
+            viewModelScope.launch {
+                repositoryUseCases.updateSlideNoteCollection(id, newName)
+            }
+        } catch (e: Exception) {
+            // TODO - add a toast
+        }
+    }
 }

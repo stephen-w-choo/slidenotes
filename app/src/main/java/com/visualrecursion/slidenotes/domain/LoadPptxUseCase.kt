@@ -18,7 +18,9 @@ class LoadPptxUseCase @Inject constructor(
             val inputStream = contentResolver.openInputStream(uri)
 
             if (inputStream != null) {
-                parseInputStream(inputStream) // implicit return
+                val xmlSlideShow = parseInputStream(inputStream)
+
+                xmlSlideShow // implicit return
             } else {
                 null
             }

@@ -1,4 +1,4 @@
-package com.visualrecursion.slidenotes.ui.screens.landing
+package com.visualrecursion.slidenotes.ui.screens.landing.startMenu
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -23,12 +23,12 @@ import com.visualrecursion.slidenotes.ui.utils.getFileExtension
 @Composable
 fun StartMenuView(
     viewModel: StartMenuViewModel,
-    navigateToNotes: (Long) -> Unit
+    navigateToConversionMenu: () -> Unit
 ) {
     val uiState = viewModel.startMenuUiState.collectAsState().value
 
-    if (uiState is StartMenuUiState.Parsed) {
-        navigateToNotes(uiState.savedSlideNoteId)
+    if (uiState is StartMenuUiState.PptxLoaded) {
+        navigateToConversionMenu()
         viewModel.resetState()
     }
 
@@ -36,7 +36,7 @@ fun StartMenuView(
         LoadDocumentButton(
             viewModel = viewModel,
             disabled = (uiState is StartMenuUiState.Loading
-                     || uiState is StartMenuUiState.Parsed)
+                     || uiState is StartMenuUiState.PptxLoaded)
         )
         Column(
             modifier = Modifier.heightIn(min = 300.dp)
