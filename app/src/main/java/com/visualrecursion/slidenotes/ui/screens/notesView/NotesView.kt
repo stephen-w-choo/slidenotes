@@ -11,9 +11,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.visualrecursion.slidenotes.R
 import com.visualrecursion.slidenotes.domain.models.SlideNote
+import com.visualrecursion.slidenotes.domain.models.SlideNoteItem
 import com.visualrecursion.slidenotes.ui.components.NotesPager
+import com.visualrecursion.slidenotes.ui.components.containers.PreviewContainer
 
 @Composable
 fun NotesView(
@@ -44,7 +47,6 @@ fun NotesView(
 fun NotesSuccessView(
     slideNote: SlideNote
 ) {
-
     val pagerState = rememberPagerState { slideNote.notes.size }
 
     Column(
@@ -54,6 +56,42 @@ fun NotesSuccessView(
         NotesPager(
             notes = slideNote.notes.map { it.content },
             pagerState = pagerState
+        )
+    }
+}
+
+@Preview
+@Composable
+fun NotesViewPreview() {
+    PreviewContainer {
+        NotesSuccessView(
+            slideNote = SlideNote(
+                name = "",
+                notes = listOf(
+                    SlideNoteItem(
+                        header = "",
+                        content = ""
+                    )
+                )
+            )
+        )
+    }
+}
+
+@Preview
+@Composable
+fun NotesViewPreviewDark() {
+    PreviewContainer(darkTheme = true) {
+        NotesSuccessView(
+            slideNote = SlideNote(
+                name = "",
+                notes = listOf(
+                    SlideNoteItem(
+                        header = "",
+                        content = ""
+                    )
+                )
+            )
         )
     }
 }

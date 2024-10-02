@@ -10,4 +10,19 @@
     <string name="navigation_error_message">Sorry, that note does not appear to be available</string>
     <string name="loading_text_processing">Processing file</string>
     <string name="make_a_new_slidenote">Make a new SlideNote</string>
+
+    <!--  Start menu  -->
+    <string name="make_note_slide_deck">Generate notes from a slide deck</string>
+    <string name="supported_file_types">Supported file types: pptx, odp</string>
+    <string name="make_new_blank_note">Make a new note</string>
+    <string name="view_previously_created_notes">View previously created notes</string>
+
+    <!--  Conversion menu  -->
+    <string name="generate_speaker_notes">Generate notes from existing speaker notes</string>
+    <string name="generate_blank_note_per_slide">Create a blank note for each slide</string>
+    <string name="use_ai_to_generate_notes">Use AI to generate notes (in development)</string>
+    <string name="name">name</string>
+    <string name="name_fallback">Unable to get filename</string>
+    <string name="size">size</string>
+    <string name="size_fallback">Unable to get file size</string>
 </resources>

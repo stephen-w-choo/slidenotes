@@ -10,7 +10,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,28 +27,27 @@ class StartMenuViewModel @Inject constructor(
     private val _startMenuUiState = MutableStateFlow<StartMenuUiState>(StartMenuUiState.Default)
     val startMenuUiState = _startMenuUiState.asStateFlow()
 
+    private val _startMenuEvents = MutableSharedFlow<StartMenuEvent>()
+    val startMenuEvents = _startMenuEvents.asSharedFlow()
+
     fun handleFileUri(uri: Uri?) {
         // TODO: Improve the logic here - would be easier to wrap the whole thing in a try block
         //  and catch in one place. Would remove duplication.
         _startMenuUiState.value = StartMenuUiState.Loading
 
-        if (uri == null) { setErrorState("File appears to be empty or blank") }
+        try {
+            if (uri == null) throw Exception()
 
-        if (uri != null) {
             CoroutineScope(Dispatchers.IO).launch {
-                val xmlSlideShow = loadPptxUseCase(uri)
-
-                if (xmlSlideShow == null) {
-                    setErrorState("File appears to be empty or blank")
-                    return@launch
-                }
-
+                val xmlSlideShow = loadPptxUseCase(uri) ?: throw Exception()
                 val fileDetails = getFileDetails(context, uri)
 
                 pptxObjectHolder.pptxObject.value = PptxObject(fileDetails, xmlSlideShow)
-
-                _startMenuUiState.value = StartMenuUiState.PptxLoaded
+                _startMenuEvents.emit(StartMenuEvent.PptxLoaded)
+                resetState()
             }
+        } catch (e: Exception) {
+            setErrorState("We were unable to parse this PPTX file. Please try again, or check the file if it keeps happening.")
         }
     }
 
@@ -58,7 +59,7 @@ class StartMenuViewModel @Inject constructor(
         return false
     }
 
-    fun resetState() {
+    private fun resetState() {
         _startMenuUiState.value = StartMenuUiState.Default
     }
 

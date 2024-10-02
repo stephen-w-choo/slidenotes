@@ -1,4 +1,4 @@
-package com.visualrecursion.slidenotes.ui.theme
+package com.example.compose
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF5D5F5F)
@@ -216,3 +216,38 @@ val surfaceContainerLowDarkHighContrast = Color(0xFF1C1B1B)
 val surfaceContainerDarkHighContrast = Color(0xFF201F1F)
 val surfaceContainerHighDarkHighContrast = Color(0xFF2A2A2A)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF353434)
+
+val customColor1Light = Color(0xFF8E1E00)
+val onCustomColor1Light = Color(0xFFFFFFFF)
+val customColor1ContainerLight = Color(0xFFC43E1C)
+val onCustomColor1ContainerLight = Color(0xFFFFFFFF)
+
+val customColor1LightMediumContrast = Color(0xFF831B00)
+val onCustomColor1LightMediumContrast = Color(0xFFFFFFFF)
+val customColor1ContainerLightMediumContrast = Color(0xFFC43E1C)
+val onCustomColor1ContainerLightMediumContrast = Color(0xFFFFFFFF)
+
+val customColor1LightHighContrast = Color(0xFF480A00)
+val onCustomColor1LightHighContrast = Color(0xFFFFFFFF)
+val customColor1ContainerLightHighContrast = Color(0xFF831B00)
+val onCustomColor1ContainerLightHighContrast = Color(0xFFFFFFFF)
+
+val customColor1Dark = Color(0xFFFFB4A2)
+val onCustomColor1Dark = Color(0xFF621100)
+val customColor1ContainerDark = Color(0xFFB83514)
+val onCustomColor1ContainerDark = Color(0xFFFFFFFF)
+
+val customColor1DarkMediumContrast = Color(0xFFFFBAAA)
+val onCustomColor1DarkMediumContrast = Color(0xFF330500)
+val customColor1ContainerDarkMediumContrast = Color(0xFFF5603C)
+val onCustomColor1ContainerDarkMediumContrast = Color(0xFF000000)
+
+val customColor1DarkHighContrast = Color(0xFFFFF9F8)
+val onCustomColor1DarkHighContrast = Color(0xFF000000)
+val customColor1ContainerDarkHighContrast = Color(0xFFFFBAAA)
+val onCustomColor1ContainerDarkHighContrast = Color(0xFF000000)
+
+
+
+
+

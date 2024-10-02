@@ -3,20 +3,31 @@ package com.visualrecursion.slidenotes.ui.screens.landing.startMenu
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.visualrecursion.slidenotes.R
-import com.visualrecursion.slidenotes.ui.components.ErrorBox
-import com.visualrecursion.slidenotes.ui.components.LoadingIndicator
+import com.visualrecursion.slidenotes.ui.components.containers.PreviewContainer
+import com.visualrecursion.slidenotes.ui.navigation.components.CtaButton
 import com.visualrecursion.slidenotes.ui.utils.getFileExtension
 
 
@@ -25,47 +36,30 @@ fun StartMenuView(
     viewModel: StartMenuViewModel,
     navigateToConversionMenu: () -> Unit
 ) {
-    val uiState = viewModel.startMenuUiState.collectAsState().value
+    Dialog(onDismissRequest = { /*TODO*/ }) {
 
-    if (uiState is StartMenuUiState.PptxLoaded) {
-        navigateToConversionMenu()
-        viewModel.resetState()
     }
 
-    Column {
-        LoadDocumentButton(
-            viewModel = viewModel,
-            disabled = (uiState is StartMenuUiState.Loading
-                     || uiState is StartMenuUiState.PptxLoaded)
-        )
-        Column(
-            modifier = Modifier.heightIn(min = 300.dp)
-        ) {
-            AnimatedVisibility(visible = uiState is StartMenuUiState.Loading) {
-                LoadingIndicator(stringResource(R.string.loading_text_processing))
-            }
-            AnimatedVisibility(visible = uiState is StartMenuUiState.Error) {
-                if (uiState is StartMenuUiState.Error) {
-                    ErrorBox(errorMessage = uiState.error)
+    LaunchedEffect(Unit) {
+        viewModel.startMenuEvents.collect { event ->
+            when (event) {
+                is StartMenuEvent.PptxLoaded -> {
+                    navigateToConversionMenu()
                 }
             }
         }
     }
-}
 
-@Composable
-fun LoadDocumentButton(
-    viewModel: StartMenuViewModel,
-    disabled: Boolean
-) {
+    val uiState = viewModel.startMenuUiState.collectAsState().value
+
     val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(
+
+    val documentSelectionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
         onResult = { uri: Uri? ->
-            if (uri == null) { // if the user doesn't choose a file
+            if (uri == null) { // will be null if the user doesn't choose a file
                 return@rememberLauncherForActivityResult
             }
-
             // Handle the selected file URI here
             val fileExtension = getFileExtension(context, uri)
 
@@ -75,11 +69,111 @@ fun LoadDocumentButton(
             }
         }
     )
+    val launchDocumentSelectionAction = { documentSelectionLauncher.launch(arrayOf("*/*")) }
 
-    Button(
-        onClick = { launcher.launch(arrayOf("*/*")) },
-        enabled = !disabled
+    StartMenuScreen(
+        launchDocumentPicker = launchDocumentSelectionAction,
+        uiState = uiState
+    )
+}
+
+@Composable
+fun StartMenuScreen(
+    launchDocumentPicker: () -> Unit,
+    uiState: StartMenuUiState,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.surfaceContainer)
+            .padding(16.dp)
     ) {
-        Text(text = "Create a note")
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_slidenote_logo),
+                contentDescription = null
+            )
+        }
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        CtaButton(
+            text = stringResource(R.string.make_note_slide_deck),
+            subtext = stringResource(R.string.supported_file_types),
+            leftIcon = R.drawable.ic_load_previous,
+            onClick = launchDocumentPicker,
+            enabled = uiState is StartMenuUiState.Default,
+            loading = uiState is StartMenuUiState.Loading,
+        )
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        CtaButton(
+            text = stringResource(R.string.make_new_blank_note),
+            leftIcon = R.drawable.ic_new_note,
+            onClick = { }, // TODO
+            enabled = uiState is StartMenuUiState.Default,
+            loading = uiState is StartMenuUiState.Loading
+        )
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        CtaButton(
+            text = stringResource(R.string.view_previously_created_notes),
+            leftIcon = R.drawable.ic_page_history,
+            onClick = { }, // TODO
+        )
+    }
+}
+
+
+@Preview
+@Composable
+fun StartMenuScreenPreview() {
+    PreviewContainer {
+        StartMenuScreen(
+            launchDocumentPicker = {},
+            uiState = StartMenuUiState.Default
+        )
+    }
+}
+
+
+@Preview
+@Composable
+fun StartMenuScreenPreviewDark() {
+    PreviewContainer(
+        darkTheme = true
+    ) {
+        StartMenuScreen(
+            launchDocumentPicker = {},
+            uiState = StartMenuUiState.Default
+        )
+    }
+}
+
+@Preview
+@Composable
+fun StartMenuScreenPreviewLoading() {
+    PreviewContainer {
+        StartMenuScreen(
+            launchDocumentPicker = {},
+            uiState = StartMenuUiState.Loading
+        )
+    }
+}
+
+@Preview
+@Composable
+fun StartMenuScreenPreviewError() {
+    PreviewContainer {
+        StartMenuScreen(
+            launchDocumentPicker = {},
+            uiState = StartMenuUiState.Error(error = "Failed to load document")
+        )
     }
 }

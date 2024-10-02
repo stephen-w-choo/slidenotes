@@ -9,8 +9,11 @@ sealed interface StartMenuUiState {
     data class Error(
         val error: String
     ) : StartMenuUiState
-
     data object PptxLoaded : StartMenuUiState
+}
+
+sealed interface StartMenuEvent {
+    data object PptxLoaded : StartMenuEvent
 }
 
 data class PptxObject(

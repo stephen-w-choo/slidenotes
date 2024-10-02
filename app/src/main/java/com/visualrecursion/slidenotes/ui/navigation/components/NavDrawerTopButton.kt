@@ -14,7 +14,7 @@ import com.visualrecursion.slidenotes.R
 import com.visualrecursion.slidenotes.ui.components.containers.PreviewContainer
 
 @Composable
-fun MakeNewSlideNoteButton(
+fun NavDrawerTopButton(
     onClick: () -> Unit,
 ) {
     NavigationDrawerItem(
@@ -38,6 +38,6 @@ fun MakeNewSlideNoteButton(
 @Composable
 fun MakeNewSlideNoteButtonPreview() {
     PreviewContainer {
-        MakeNewSlideNoteButton { }
+        NavDrawerTopButton { }
     }
 }

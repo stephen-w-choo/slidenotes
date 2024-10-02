@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
-import com.visualrecursion.slidenotes.ui.navigation.components.MakeNewSlideNoteButton
+import com.visualrecursion.slidenotes.ui.navigation.components.NavDrawerTopButton
 import com.visualrecursion.slidenotes.ui.navigation.components.SlideNoteNavDrawerItem
 import com.visualrecursion.slidenotes.ui.utils.isCurrentDestinationOnCollectionId
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ fun NavigationDrawer(
     val closeDrawer = { scope.launch { drawerState.close() } }
 
     ModalDrawerSheet {
-        MakeNewSlideNoteButton(
+        NavDrawerTopButton(
             onClick = {
                 navController.navigate(NavRoute.StartMenu.name)
                 closeDrawer()
